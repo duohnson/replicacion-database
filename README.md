@@ -33,6 +33,7 @@ Trigger: Disparador como objeto de base de datos usado para ejecutar una accion 
 ### Trigger para INSERT:
 
 ´´´bash
+
 DELIMITER $$
 
 CREATE TRIGGER tg_replica_activos_insert
@@ -47,11 +48,13 @@ BEGIN
 END$$
 
 DELIMITER ;
+
 ´´´
 
 ### Trigger para UPDATE:
 
 ´´´bash
+
 DELIMITER $$
 
 CREATE TRIGGER tg_replica_activos_update
@@ -78,11 +81,13 @@ BEGIN
 END$$
 
 DELIMITER ;
+
 ´´´
 
 ### Trigger para DELETE:
 
 ´´´bash
+
 DELIMITER $$
 
 CREATE TRIGGER tg_replica_activos_delete
@@ -94,6 +99,7 @@ BEGIN
 END$$
 
 DELIMITER ;
+
 ´´´
 
 ## Tabla para activos en la base principal
@@ -101,7 +107,8 @@ DELIMITER ;
 Esquema para crear las mismas tablas en las bases de replica, para que los triggers funcionen correctamente.
 Deben coincidir todas.
 
-´´´sql
+´´´bash
+
 CREATE TABLE IF NOT EXISTS activos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     placa VARCHAR(50) NOT NULL,
@@ -111,11 +118,18 @@ CREATE TABLE IF NOT EXISTS activos (
     sede VARCHAR(100),
     area VARCHAR(100)
 );
+
 ´´´
 Insert de ejemplo para probar la replicación:
 
-´´´sql
+´´´bash
+
 INSERT INTO activos (placa, numero_serie, activo, ip, sede, area)
 VALUES 
 ('422723', 'SN123456789', 'Laptop', '192.168.1.105', 'Sede Central', 'Oficina TI');
+
 ´´´
+
+## ATENCIÓN
+
+Método bajo / intermedio, para alta producción y muchas transacciones, se recomienda usar Replicación de MySQL con Binary Logs, o Replicación Nativa de bases.
