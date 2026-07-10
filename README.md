@@ -1,9 +1,36 @@
-Metodo de replicación de bases de datos MySQL, para no tener que usar un solo servidor y que este se sature, o se caiga y no tengamos acceso a la base de datos.
+## Replicación de bases de datos MySQL
+
+Método de replicación de bases de datos MySQL, para no tener que usar un solo servidor y que este se sature, o se caiga y no tengamos acceso a la base de datos.
+
+## Explicación:
+
+La replicación de bases de datos MySQL sirve para mantener copias sincronizadas de una base de datos en diferentes servidores o bases, de manera que no se dependa de un único punto de acceso.
+
+En este caso, los triggers funcionan como un mecanismo automático que detecta cambios en la base principal (INSERT, UPDATE o DELETE (entre otras)) y los repite en las bases de réplica. Esto ayuda a:
+
+* Evitar saturación del servidor principal: las consultas pueden distribuirse entre varias bases.
+* Mejorar disponibilidad: si una base falla, existe otra copia con la información.
+* Mantener respaldos actualizados: los cambios se reflejan automáticamente.
+* Reducir pérdida de información: las réplicas contienen una copia reciente de los datos.
+
+Los tres triggers realizan lo siguiente:
+
+INSERT: cuando se agrega un nuevo activo en la base principal, lo copia automáticamente en las bases réplica.
+UPDATE: cuando se modifica un activo, actualiza esos cambios en las réplicas.
+DELETE: cuando se elimina un activo, también lo elimina en las réplicas.
+
+IMPORTANTE: La tabla activos debe existir con la misma estructura en todas las bases para que los triggers puedan copiar correctamente la información.
+
+## Seguridad y respaldos
+
+PARA METODOS DE SEGURIDAD Y RESPALDOS VISITAR: (aun trabajando)
+
+## Triggers
 
 Trigger: Disparador como objeto de base de datos usado para ejecutar una accion automaticamente cuando ocurre un evento en especifico.
 "Escucha" y luego repite en otras bases.
 
-Trigger para INSERT:
+### Trigger para INSERT:
 
 ´´´bash
 DELIMITER $$
@@ -22,7 +49,7 @@ END$$
 DELIMITER ;
 ´´´
 
-Trigger para UPDATE:
+### Trigger para UPDATE:
 
 ´´´bash
 DELIMITER $$
@@ -53,7 +80,7 @@ END$$
 DELIMITER ;
 ´´´
 
-Trigger para DELETE:
+### Trigger para DELETE:
 
 ´´´bash
 DELIMITER $$
@@ -69,7 +96,8 @@ END$$
 DELIMITER ;
 ´´´
 
-Tabla para activos en la base principal:
+## Tabla para activos en la base principal
+
 Esquema para crear las mismas tablas en las bases de replica, para que los triggers funcionen correctamente.
 Deben coincidir todas.
 
@@ -91,4 +119,3 @@ INSERT INTO activos (placa, numero_serie, activo, ip, sede, area)
 VALUES 
 ('422723', 'SN123456789', 'Laptop', '192.168.1.105', 'Sede Central', 'Oficina TI');
 ´´´
-
